@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "NodeNext",
+    "strict": true,
+    "jsx": "preserve",
+    "moduleResolution": "nodenext",
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "lib": ["esnext", "DOM"],
+    "allowSyntheticDefaultImports": true,
+    "types": ["node"]
+  },
+  "include": ["**/*ts"],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,24 @@
+{
+  "type": "module",
+  "name": "jc-shared",
+  "version": "1.0.0",
+  "description": "shared classes for jc",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leider/JC-Backoffice"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "dayjs": "1.11.13",
+    "deep-object-diff": "1.1.9",
+    "ikalendar": "1.5.0",
+    "marked": "15.0.6",
+    "tinycolor2": "1.6.0"
+  },
+  "scripts": {
+    "test": "../node_modules/.bin/vitest --run",
+    "compile": "../node_modules/typescript/bin/tsc",
+    "deploy": "yarn compile",
+    "clean-ts": "rm -f **/*.js || :"
+  }
+}

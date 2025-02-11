@@ -1,0 +1,171 @@
+extends vertrag-briefpapier
+
+include mixins
+
+block adresse
+  span #{vermietung.vertragspartner.name}<br>
+  each line in vermietung.vertragspartner.addressLines
+    span #{line}<br>
+
+block content1
+  - var start = vermietung.startDatumUhrzeit;
+  - var ende = vermietung.endDatumUhrzeit;
+  - var art = vermietung.art;
+  - var istAngebot = art === "Angebot"
+  - var istRechnung = art === "Rechnung"
+
+  .row
+    .col-7
+      p: b #{art} #{istRechnung ? `Re.Nr.: ${vermietung.angebot.rechnungsnummer}` : ""}
+    .col-5
+      p.text-end Karlsruhe, #{datum.tagMonatJahrLang}
+
+  .row
+    .col-12
+      p Vermietung unserer Räumlichkeiten am #{start.tagMonatJahrLang} von #{start.uhrzeitKompakt} bis #{ende.uhrzeitKompakt} Uhr.
+      p.
+        Sehr geehrte Damen und Herren,<br>
+        #{istAngebot ? "wir freuen uns, Ihnen folgendes Angebot unterbreiten zu können." : `anbei finden Sie ${istRechnung ? "unsere Rechnung" : "den Vertrag"}.`}
+
+      table.table.table-bordered.table-sm
+        - var zeile = 0
+        - var angebot = vermietung.angebot
+        - var veranstaltung = {istVergangen: true}
+
+        - var hatRabatt = !!angebot.saalmieteRabatt
+        - var anzahlSpalten = hatRabatt ? 6 : 5
+        tr
+          th Nr.
+          th Posten
+          th Anzahl
+          th Einzelpreis
+          if hatRabatt
+            th Rabatt
+          th Summe
+        tr
+          td.text-end #{++zeile}.
+          td Saalmiete Jazzclub
+          td.text-end 1
+          td.text-end: +currencyOrEmpty(angebot.saalmiete)
+          if hatRabatt
+            td.text-end #{hatRabatt ? angebot.saalmieteRabatt + " %" : ""}
+          td.text-end: b: +currencyOrEmpty(angebot.saalmieteTotal)
+        if angebot.reinigungHaus
+          tr
+            td.text-end #{++zeile}.
+            td Reinigung Haus
+            td.text-end 1
+            td.text-end: +currencyOrEmpty(angebot.reinigungHaus)
+            if hatRabatt
+              td #{""}
+            td.text-end: b: +currencyOrEmpty(angebot.reinigungHaus)
+        if angebot.tontechnikerTotal
+          tr
+            td.text-end #{++zeile}.
+            td Tontechniker*in
+            td.text-end #{angebot.tontechnikerAnzahl}
+            td.text-end: +currencyOrEmpty(angebot.tontechnikerBetrag)
+            if hatRabatt
+              td #{""}
+            td.text-end: b: +currencyOrEmpty(angebot.tontechnikerTotal)
+        if angebot.lichttechnikerTotal
+          tr
+            td.text-end #{++zeile}.
+            td Lichttechniker*in
+            td.text-end #{angebot.lichttechnikerAnzahl}
+            td.text-end: +currencyOrEmpty(angebot.lichttechnikerBetrag)
+            if hatRabatt
+              td #{""}
+            td.text-end: b: +currencyOrEmpty(angebot.lichttechnikerTotal)
+        if angebot.musikerTotal
+          tr
+            td.text-end #{++zeile}.
+            td Musiker*in
+            td.text-end #{angebot.musikerAnzahl}
+            td.text-end: +currencyOrEmpty(angebot.musikerGage)
+            if hatRabatt
+              td #{""}
+            td.text-end: b: +currencyOrEmpty(angebot.musikerTotal)
+        if angebot.fluegel
+          tr
+            td.text-end #{++zeile}.
+            td Flügel inkl. Stimmung
+            td.text-end 1
+            td.text-end: +currencyOrEmpty(angebot.fluegel)
+            if hatRabatt
+              td #{""}
+            td.text-end: b: +currencyOrEmpty(angebot.fluegel)
+        if angebot.barpersonalTotal
+          tr
+            td.text-end #{++zeile}.
+            td Bar (Personal)
+            td.text-end #{angebot.barpersonalAnzahl}
+            td.text-end: +currencyOrEmpty(angebot.barpersonalBetrag)
+            if hatRabatt
+              td #{""}
+            td.text-end: b: +currencyOrEmpty(angebot.barpersonalTotal)
+        if angebot.reinigungBar
+          tr
+            td.text-end #{++zeile}.
+            td Bar (Reinigung)
+            td.text-end 1
+            td.text-end: +currencyOrEmpty(angebot.reinigungBar)
+            if hatRabatt
+              td #{""}
+            td.text-end: b: +currencyOrEmpty(angebot.reinigungBar)
+        if angebot.abenddienst
+          tr
+            td.text-end #{++zeile}.
+            td Abenddienst
+            td.text-end 1
+            td.text-end: +currencyOrEmpty(angebot.abenddienst)
+            if hatRabatt
+              td #{""}
+            td.text-end: b: +currencyOrEmpty(angebot.abenddienst)
+        if angebot.frei1
+          tr
+            td.text-end #{++zeile}.
+            td #{angebot.frei1}
+            td.text-end 1
+            td.text-end: +currencyOrEmpty(angebot.frei1EUR)
+            if hatRabatt
+              td #{""}
+            td.text-end: b: +currencyOrEmpty(angebot.frei1EUR)
+        if angebot.frei2
+          tr
+            td.text-end #{++zeile}.
+            td #{angebot.frei2}
+            td.text-end 1
+            td.text-end: +currencyOrEmpty(angebot.frei2EUR)
+            if hatRabatt
+              td #{""}
+            td.text-end: b: +currencyOrEmpty(angebot.frei2EUR)
+        if angebot.frei3
+          tr
+            td.text-end #{++zeile}.
+            td #{angebot.frei3}
+            td.text-end 1
+            td.text-end: +currencyOrEmpty(angebot.frei3EUR)
+            if hatRabatt
+              td #{""}
+            td.text-end: b: +currencyOrEmpty(angebot.frei3EUR)
+        tr
+          td.text-end(colspan=2) Summe netto
+          td.text-end(colspan=anzahlSpalten-2): +currencyOrEmpty(angebot.summe)
+        tr
+          td.text-end(colspan=2) MWSt (19%)
+          td.text-end(colspan=anzahlSpalten-2): +currencyOrEmpty(angebot.summe * 0.19)
+        tr
+          th.text-end(colspan=2) Summe brutto
+          th.text-end(colspan=anzahlSpalten-2): +currencyOrEmpty(angebot.summe * 1.19)
+
+      | !{angebot.renderedBeschreibung}
+
+      if istRechnung
+        p Zahlbar sofort ohne Abzüge.
+        p Vielen Dank für die Zusammenarbeit!
+      if istAngebot
+        p Vielen Dank für die freundliche Anfrage.<br>Wir würden uns über eine Zusammenarbeit sehr freuen!
+        p Mit freundlichen Grüßen,
+
+      p Marcel Millot & das gesamte Team des Jazzclub

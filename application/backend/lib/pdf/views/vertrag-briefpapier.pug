@@ -1,0 +1,105 @@
+mixin signbox(title, party, optionalText, unterschrift)
+  .row
+    .col-3
+      p.small #{title}:
+    .col-9
+      p.mb-0(style="border-bottom:1px dotted")
+        if (optionalText)
+          if (unterschrift)
+            img(src=publicUrlPrefix + '/reporting/niklas.png', height="22", style="margin-top:-10px")
+          else
+            | #{optionalText}
+        else
+          | &nbsp;
+      p.small.text-center #{party}
+
+mixin bild(name)
+  div(style="margin-top:30px")
+    img(src=publicUrlPrefix + '/reporting/' + name + '.png', height="30")
+
+mixin sidebar
+  img(src=publicUrlPrefix + '/reporting/logo.png', height="80")
+  div(style="font-size:6px;margin-top:60px")
+    p
+      b Jazzclub Karlsruhe e.V.<br>
+      | Kaiserpassage 6<br>
+      | 76133 Karlsruhe<br>
+    p
+      .blau Kontakt
+      | E-Mail: #{email}@jazzclub.de<br>
+      | Web: jazzclub.de<br>
+    p
+      .blau Bankverbindung
+      | Sparkasse Karlsruhe<br>
+      | IBAN: DE69 6605 0101 0010 1743 24 <br>
+      | BIC: KARSDE66XXX<br>
+    p USt-ID:  DE317773035
+    p
+      .blau Vorsitzende
+      | Niklas Braun, Torsten Antoni, Steffen Schuhmacher<br>
+    p
+      .blau Vereinsregister
+      | VR Nr. 100827<br>
+      | Registergericht ist das Amtsgericht Karlsruhe<br>
+      | Gerichtsstand ist Karlsruhe<br>
+  +bild('jazzverband')
+  +bild('ring')
+  +bild('jazzunion')
+  +bild('livekomm')
+  +bild('city')
+  +bild('meka')
+
+- var noOfPages = einseitig ? 1 : veranstaltung.vertrag.zusatzvereinbarungen ? 3 : 2;
+
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    link(href=publicUrlPrefix + '/stylesheets/screen.css', rel="stylesheet")
+    link(href=publicUrlPrefix + '/fonts/fonts.css', rel="stylesheet")
+    style.
+      p {margin-bottom: 1em !important}
+
+  body(style="font-size:8px;")
+    .container-fluid
+      #Seite1.row(style="page-break-inside: avoid;")
+        .col-9
+          #adresse(style="margin-top:110px")
+            .row
+              .col-12
+                small(style="font-size:6px;")
+                  b Jazzclub Karlsruhe e.V.&nbsp;
+                  span.blau |&nbsp;
+                  | Kaiserpassage 6&nbsp;
+                  span.blau |&nbsp;
+                  | 76133 Karlsruhe
+                p &nbsp;
+                block adresse
+          #content1(style="margin-top:20px")
+          block content1
+        .col-3
+          +sidebar
+        if noOfPages > 1
+          .col-12
+            p.text-center(style="margin-top:15px") Seite 1 von #{noOfPages}
+
+      if noOfPages > 1
+        #Seite2.row(style="page-break-inside: avoid;")
+          .col-9
+            #content2(style="margin-top:10px")
+            block content2
+          .col-3
+            +sidebar
+          .col-12
+            p.text-center(style="margin-top:15px") Seite 2 von #{noOfPages}
+
+      if noOfPages > 2
+        #Seite3.row(style="page-break-inside: avoid;")
+          .col-9
+            #content3(style="margin-top:10px")
+            block content3
+          .col-3
+            +sidebar
+          .col-12
+            p.text-center(style="margin-top:15px") Seite 3 von #{noOfPages}
+

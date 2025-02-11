@@ -1,0 +1,33 @@
+doctype html
+html(style="-webkit-print-color-adjust: exact;")
+  head
+    meta(charset="utf-8")
+    link(href=publicUrlPrefix + '/stylesheets/screen.css', rel="stylesheet")
+    link(href=publicUrlPrefix + '/fonts/fonts.css', rel="stylesheet")
+
+  body
+    .row
+      .col-12
+        h3 #{veranstaltung.kopf.titel} #{" "}
+          small #{veranstaltung.datumForDisplayShort}
+    .row
+      .col-12: div#container
+        div(style="width: 800px; height: 300px; border: 1px solid black; position: relative; background-size: 200px 100px; background-position: -2px -2px; background-image: -webkit-linear-gradient(top, rgb(238, 238, 238) 2px, transparent 2px), -webkit-linear-gradient(0deg, rgb(238, 238, 238) 2px, transparent 2px);")
+
+          each box in boxes
+            if box.img
+              div(id=box.id, style=box.divStyleForImg): img(src=`${publicUrlPrefix}/riderimg/${box.img.src}`, style=box.imgStyle)
+            else
+              div(id=box.id, style=box.divStyleForBox)
+                b(style="background-color: lightsalmon; color: white;") &uarr; Front &uarr;
+                br
+                b #{box.title}
+    .row.mt-5
+      .col-12
+        h3 Infos
+    .row
+      each box in boxes
+        if box.comment
+          .col-3
+            h5: b #{box.title}
+            p #{box.comment}
