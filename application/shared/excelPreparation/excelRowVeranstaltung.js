@@ -37,11 +37,11 @@ function fillWerbung(row, kosten) {
     }
     return row;
 }
-export function excelRows({ veranstaltungen, optionen }) {
+export function excelRows({ veranstaltungen, optionen, urlRoot, }) {
     const klavierStimmerDefault = optionen.preisKlavierstimmer;
-    return map(veranstaltungen, (veranstaltung) => excelRowVeranstaltung({ veranstaltung, klavierStimmerDefault }));
+    return map(veranstaltungen, (veranstaltung, index) => excelRowVeranstaltung({ veranstaltung, klavierStimmerDefault, urlRoot, index }));
 }
-function excelRowVeranstaltung({ veranstaltung, klavierStimmerDefault }) {
+function excelRowVeranstaltung({ veranstaltung, klavierStimmerDefault, urlRoot, index, }) {
     return veranstaltung.isVermietung ? excelRowVermietung(veranstaltung) : excelRowKonzert(veranstaltung);
     function excelRowKonzert(konzert) {
         const kasse = konzert.kasse;
@@ -49,22 +49,22 @@ function excelRowVeranstaltung({ veranstaltung, klavierStimmerDefault }) {
         const kosten = konzert.kosten;
         const staff = konzert.staff;
         const klavierStimmerStandard = konzert.technik.fluegel ? klavierStimmerDefault : 0;
+        const eintrittspreisSchnitt = konzert.eintrittspreise.eintrittspreisSchnitt;
         const result = {
+            rowNo: index + 2,
             datum: konzert.startDatumUhrzeit.toJSDate,
             titel: konzert.kopf.titel,
+            url: `${urlRoot}${konzert.fullyQualifiedUrl}`,
             typ: konzert.kopf.eventTypRich?.name ?? "",
             color: tinycolor(konzert.kopf.eventTypRich?.color ?? "#FFF").toHexString(),
             abendkasse: einnahme(kasse.einnahmeTicketsEUR),
             reservix: einnahme(kasse.einnahmenReservix),
             einnahmenBar: einnahme(kasse.einnahmeOhneBankUndTickets),
-            einlageBar: einnahme(kasse.einnahmeBankEUR),
-            zuschuss: einnahme(konzert.eintrittspreise.zuschuss),
             ausgabenBar: ausgabe(kasse.ausgabenOhneGage),
             anBank: ausgabe(kasse.ausgabeBankEUR),
             gage: ausgabe(kosten.gagenTotalEUR),
             deal: ausgabe(kalk.dealAbsolutEUR),
             provision: ausgabe(kosten.provisionAgentur),
-            backline: ausgabe(kosten.backlineEUR),
             technik: ausgabe(kosten.technikAngebot1EUR),
             fluegel: ausgabe(kosten.fluegelstimmerEUR || klavierStimmerStandard),
             saalmiete: ausgabe(kosten.saalmiete),
@@ -72,11 +72,15 @@ function excelRowVeranstaltung({ veranstaltung, klavierStimmerDefault }) {
             tontechniker: !staff.technikerVNotNeeded && !kosten.tontechniker ? "N/A" : ausgabe(kosten.tontechniker),
             lichttechniker: !staff.technikerNotNeeded && !kosten.lichttechniker ? "N/A" : ausgabe(kosten.lichttechniker),
             cateringMusiker: ausgabe(kosten.cateringMusiker),
-            cateringPersonal: ausgabe(kosten.cateringPersonal),
             hotel: ausgabe(konzert.unterkunft.roomsTotalEUR),
             hotelTransport: ausgabe(konzert.unterkunft.transportEUR),
             ksk: ausgabe(kosten.ksk),
             gema: ausgabe(kalk.gema),
+            eintrittspreisSchnitt: einnahme(eintrittspreisSchnitt),
+            anzahlReservix: einnahme(kasse.anzahlReservix || kasse.einnahmenReservix / (eintrittspreisSchnitt || 1)),
+            anzahlBesucherAK: einnahme(kasse.anzahlBesucherAK),
+            anzahlAbendkasse: einnahme(kasse.einnahmeTicketsEUR / (eintrittspreisSchnitt || 1)),
+            kasseFreigegeben: kasse.istFreigegeben,
         };
         if (kasse.einnahmeSonstiges1EUR && kasse.einnahmeSonstiges1EUR !== 0) {
             if (isSpende(kasse.einnahmeSonstiges1Text)) {
@@ -96,18 +100,20 @@ function excelRowVeranstaltung({ veranstaltung, klavierStimmerDefault }) {
                 result.einnahme2Text = kasse.einnahmeSonstiges2Text;
             }
         }
+        result.anzahlSpende = einnahme((result.spende ?? 0) / 10);
         return fillWerbung(result, kosten);
     }
     function excelRowVermietung(vermietung) {
         const kosten = vermietung.kosten;
         const klavierStimmerStandard = vermietung.technik.fluegel ? klavierStimmerDefault : 0;
         const result = {
+            rowNo: index + 2,
             datum: vermietung.startDatumUhrzeit.toJSDate,
             titel: vermietung.kopf.titel,
+            url: `${urlRoot}${vermietung.fullyQualifiedUrl}`,
             color: "#f6eee1",
             typ: "Vermietung",
             gage: ausgabe(kosten.gagenTotalEUR),
-            backline: ausgabe(kosten.backlineEUR),
             technik: ausgabe(kosten.technikAngebot1EUR),
             fluegel: ausgabe(kosten.fluegelstimmerEUR || klavierStimmerStandard),
             saalmiete: einnahme(vermietung.saalmiete),

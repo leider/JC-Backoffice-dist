@@ -27,6 +27,7 @@ export default class Kasse {
         this.anzahlBesucherAK = 0;
         this.kassenfreigabe = "";
         this.einnahmenReservix = 0; // darf nicht in kassenberechnung
+        this.anzahlReservix = 0; // darf nicht in kassenberechnung
         this.startinhalt = {
             "10": undefined,
             "20": undefined,
