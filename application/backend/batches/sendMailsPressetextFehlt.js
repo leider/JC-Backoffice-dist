@@ -1,8 +1,8 @@
 import { loggers } from "winston";
 import conf from "jc-shared/commons/simpleConfigure.js";
-import mailstore from "jc-backend/lib/mailsender/mailstore.js";
-import mailtransport from "jc-backend/lib/mailsender/mailtransport.js";
-import usersService from "jc-backend/lib/users/usersService.js";
+import mailstore from "../lib/mailsender/mailstore.js";
+import mailtransport from "../lib/mailsender/mailtransport.js";
+import usersService from "../lib/users/usersService.js";
 import { byDateRangeInAscendingOrder } from "./gigAndRentService.js";
 import MailMessage from "jc-shared/mail/mailMessage.js";
 import formatMailAddresses from "jc-shared/mail/formatMailAddresses.js";
@@ -27,7 +27,7 @@ ${map(kaputte, (veranst) => presseTemplateInternal(veranst)).join("\n\n---\n")}`
     });
     message.body = markdownToSend;
     const bookingAddresses = usersService.emailsAllerBookingUser();
-    logger.info(`Email Adressen für fehlende Pressetexte: ${formatMailAddresses(bookingAddresses)}`);
+    logger.debug(`Email Adressen für fehlende Pressetexte: ${formatMailAddresses(bookingAddresses)}`);
     message.bcc = bookingAddresses;
     return mailtransport.sendMail(message);
 }

@@ -7,8 +7,10 @@ import passport from "passport";
 import "./initWinston.js";
 import restApp from "./rest/index.js";
 import siteApp from "./lib/site/index.js";
+import batchendpoints from "./batches/batchendpoints.js";
 import ridersrest from "./lib/rider/ridersrest.js";
 import passportInitializer from "./lib/middleware/passportInitializer.js";
+import passportApiKeyInitializer from "./lib/middleware/passportApiKeyInitializer.js";
 import { fileURLToPath } from "url";
 import conf from "jc-shared/commons/simpleConfigure.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -21,7 +23,7 @@ function handle404(req, res) {
 }
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 function handle500(error, req, res, next) {
-    const status = error.status || 500;
+    const status = error.status ?? 500;
     res.status(status);
     if (req.headers["content-type"] === "application/json") {
         res.send(error?.message);
@@ -44,10 +46,13 @@ export default function (app, forDev) {
     app.use(express.static(path.join(__dirname, "static"), { maxAge: 10 * 60 * 60 * 1000 })); // ten hours
     app.use(express.static(conf.additionalstatic, { maxAge: 10 * 60 * 60 * 1000 })); // ten hours
     app.use(passportInitializer);
+    app.use(passportApiKeyInitializer);
     app.use(secureAgainstClickjacking);
     app.use("/", siteApp);
-    const authenticator = passport.authenticate("jwt", { session: false });
-    app.use("/rest/", authenticator, restApp);
+    const authenticatorJwt = passport.authenticate("jwt", { session: false });
+    app.use("/rest/", authenticatorJwt, restApp);
+    const authenticatorBearer = passport.authenticate("bearer", { session: false });
+    app.use("/batches/", authenticatorBearer, batchendpoints);
     app.use("/ridersrest/", ridersrest);
     if (!forDev) {
         app.use(handle404);

@@ -1,5 +1,5 @@
-import konzertestore from "jc-backend/lib/konzerte/konzertestore.js";
-import vermietungenstore from "jc-backend/lib/vermietungen/vermietungenstore.js";
+import konzertestore from "../lib/konzerte/konzertestore.js";
+import vermietungenstore from "../lib/vermietungen/vermietungenstore.js";
 import sortBy from "lodash/sortBy.js";
 import constant from "lodash/constant.js";
 import filter from "lodash/filter.js";

@@ -1,27 +1,23 @@
-/* eslint-disable no-console */
-import userstore from "jc-backend/lib/users/userstore.js";
+import userstore from "../lib/users/userstore.js";
 import MailMessage from "jc-shared/mail/mailMessage.js";
-import mailtransport from "jc-backend/lib/mailsender/mailtransport.js";
+import mailtransport from "../lib/mailsender/mailtransport.js";
 import compact from "lodash/compact.js";
 import map from "lodash/map.js";
 const receiver = "leider";
 export async function informAdmin(allResults) {
     const user = userstore.forId(receiver);
     if (!user) {
-        console.error("User not found");
-        return;
+        throw new Error("User not found.");
     }
-    let errorHappened = false;
+    const collectedErrors = [];
     function createBodyFragment({ type, jobResult }) {
         const error = jobResult.error;
         const infosCompacted = Array.isArray(jobResult.result) ? compact(jobResult.result) : compact([jobResult.result]);
         if (!infosCompacted.length && !error) {
-            console.log(`nothing happened for JobType "${type}"`);
             return;
         }
         if (error) {
-            errorHappened = true;
-            console.error(`error occurred while informing for type: ${type}. ERROR: ${error}`);
+            collectedErrors.push(`error occurred while informing for type: ${type}. ERROR: ${error}`);
         }
         const infos = map(infosCompacted, ({ accepted, rejected, response }) => ({
             accepted,
@@ -40,6 +36,7 @@ ${error}`
     if (!bodyFragments.length) {
         return;
     }
+    const errorHappened = collectedErrors.length > 0;
     const message = new MailMessage({
         subject: `[${errorHappened ? "ERROR" : "INFO"} B-O Jazzclub] Mails sent`,
     });

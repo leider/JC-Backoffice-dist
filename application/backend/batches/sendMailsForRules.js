@@ -1,6 +1,6 @@
 import { loggers } from "winston";
-import mailstore from "jc-backend/lib/mailsender/mailstore.js";
-import mailtransport from "jc-backend/lib/mailsender/mailtransport.js";
+import mailstore from "../lib/mailsender/mailstore.js";
+import mailtransport from "../lib/mailsender/mailtransport.js";
 import conf from "jc-shared/commons/simpleConfigure.js";
 import { byDateRangeInAscendingOrder } from "./gigAndRentService.js";
 import VeranstaltungFormatter from "jc-shared/veranstaltung/VeranstaltungFormatter.js";
@@ -26,7 +26,7 @@ ${map(selected, (veranst) => {
     const mailmessage = new MailMessage({ subject: rule.subject(now) });
     mailmessage.body = markdownToSend;
     const mailAddress = MailMessage.formatEMailAddress(rule.name, rule.email);
-    logger.info(`Email Adresse für Presseregeln: ${formatMailAddresses([mailAddress])}`);
+    logger.debug(`Email Adresse für Presseregeln: ${formatMailAddresses([mailAddress])}`);
     mailmessage.to = [mailAddress];
     return mailtransport.sendMail(mailmessage);
 }

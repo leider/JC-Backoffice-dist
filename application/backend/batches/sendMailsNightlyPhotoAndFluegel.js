@@ -1,7 +1,7 @@
 import { loggers } from "winston";
 import conf from "jc-shared/commons/simpleConfigure.js";
-import mailtransport from "jc-backend/lib/mailsender/mailtransport.js";
-import usersService from "jc-backend/lib/users/usersService.js";
+import mailtransport from "../lib/mailsender/mailtransport.js";
+import usersService from "../lib/users/usersService.js";
 import { byDateRangeInAscendingOrder } from "./gigAndRentService.js";
 import MailMessage from "jc-shared/mail/mailMessage.js";
 import formatMailAddresses from "jc-shared/mail/formatMailAddresses.js";
@@ -17,7 +17,7 @@ ${map(stuffToSend, (veranst) => veranst.kopf.titelMitPrefix + " am " + veranst.d
     });
     message.body = markdownToSend;
     const adminAddresses = usersService.emailsAllerAdmins();
-    logger.info(`Email Adressen für ${variables.subject}: ${formatMailAddresses(adminAddresses)}`);
+    logger.debug(`Email Adressen für ${variables.subject}: ${formatMailAddresses(adminAddresses)}`);
     message.to = [MailMessage.formatEMailAddress(variables.name, variables.email)];
     message.bcc = adminAddresses;
     return mailtransport.sendMail(message);

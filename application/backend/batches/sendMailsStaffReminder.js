@@ -1,6 +1,6 @@
 import conf from "jc-shared/commons/simpleConfigure.js";
-import userstore from "jc-backend/lib/users/userstore.js";
-import mailtransport from "jc-backend/lib/mailsender/mailtransport.js";
+import userstore from "../lib/users/userstore.js";
+import mailtransport from "../lib/mailsender/mailtransport.js";
 import mixVeranstaltungenMitUsers from "jc-shared/commons/mixVeranstaltungenMitUsers.js";
 import { byDateRangeInAscendingOrder } from "./gigAndRentService.js";
 import MailMessage from "jc-shared/mail/mailMessage.js";
