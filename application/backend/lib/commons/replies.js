@@ -10,5 +10,5 @@ export function reply(res, err, value) {
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 export function resToJson(res, value) {
     const valToSend = value?.toJSON ? value.toJSON() : value;
-    res.type("application/json").send(valToSend || { status: "ok" });
+    res.type("application/json").send(valToSend ?? { status: "ok" });
 }
