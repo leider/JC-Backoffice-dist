@@ -59,9 +59,6 @@ class Persistence {
     list(orderBy) {
         return this.listByField("true", orderBy);
     }
-    listByIds(list, orderBy) {
-        return this.listByField(`id IN (${map(list, (each) => `${escape(each)}`).join(",")})`, orderBy);
-    }
     listByField(where, orderBy = "id ASC") {
         const query = `SELECT data FROM ${this.collectionName} WHERE ${where} ORDER BY ${orderBy};`;
         return map(db.prepare(query).all(), (each) => each && JSON.parse(each.data));

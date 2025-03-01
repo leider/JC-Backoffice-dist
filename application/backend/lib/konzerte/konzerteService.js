@@ -88,7 +88,6 @@ async function addAndSaveImages({ konzert, dateien, typ }) {
         if (!result) {
             throw new Error("Datei schon vorhanden. Bitte Seite neu laden.");
         }
-        return;
     }
     return Promise.all(map(dateien, copyToDestination));
 }

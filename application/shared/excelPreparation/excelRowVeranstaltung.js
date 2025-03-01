@@ -4,6 +4,9 @@ import tinycolor from "tinycolor2";
 function einnahme(betrag) {
     return betrag ?? 0;
 }
+function einnahmeGanzzahl(betrag) {
+    return Math.round(betrag ?? 0);
+}
 function ausgabe(betrag) {
     return (betrag ?? -0) * -1;
 }
@@ -49,7 +52,8 @@ function excelRowVeranstaltung({ veranstaltung, klavierStimmerDefault, urlRoot, 
         const kosten = konzert.kosten;
         const staff = konzert.staff;
         const klavierStimmerStandard = konzert.technik.fluegel ? klavierStimmerDefault : 0;
-        const eintrittspreisSchnitt = konzert.eintrittspreise.eintrittspreisSchnitt;
+        const eintrittspreise = konzert.eintrittspreise;
+        const eintrittspreisSchnitt = eintrittspreise.eintrittspreisSchnitt;
         const result = {
             rowNo: index + 2,
             datum: konzert.startDatumUhrzeit.toJSDate,
@@ -77,9 +81,10 @@ function excelRowVeranstaltung({ veranstaltung, klavierStimmerDefault, urlRoot, 
             ksk: ausgabe(kosten.ksk),
             gema: ausgabe(kalk.gema),
             eintrittspreisSchnitt: einnahme(eintrittspreisSchnitt),
-            anzahlReservix: einnahme(kasse.anzahlReservix || kasse.einnahmenReservix / (eintrittspreisSchnitt || 1)),
-            anzahlBesucherAK: einnahme(kasse.anzahlBesucherAK),
-            anzahlAbendkasse: einnahme(kasse.einnahmeTicketsEUR / (eintrittspreisSchnitt || 1)),
+            anzahlReservix: einnahmeGanzzahl(kasse.anzahlReservix || kasse.einnahmenReservix / (eintrittspreisSchnitt || 1)),
+            anzahlBesucherAK: einnahmeGanzzahl(kasse.anzahlBesucherAK),
+            anzahlBesucherErwartet: einnahmeGanzzahl(eintrittspreise.erwarteteBesucher),
+            anzahlAbendkasse: einnahmeGanzzahl(kasse.einnahmeTicketsEUR / (eintrittspreisSchnitt || 1)),
             kasseFreigegeben: kasse.istFreigegeben,
         };
         if (kasse.einnahmeSonstiges1EUR && kasse.einnahmeSonstiges1EUR !== 0) {
@@ -100,7 +105,7 @@ function excelRowVeranstaltung({ veranstaltung, klavierStimmerDefault, urlRoot, 
                 result.einnahme2Text = kasse.einnahmeSonstiges2Text;
             }
         }
-        result.anzahlSpende = einnahme((result.spende ?? 0) / 10);
+        result.anzahlSpende = einnahmeGanzzahl((result.spende ?? 0) / 10);
         return fillWerbung(result, kosten);
     }
     function excelRowVermietung(vermietung) {
