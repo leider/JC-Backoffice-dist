@@ -1,4 +1,5 @@
 import KonzertKalkulation from "../konzert/konzertKalkulation.js";
+import { colorVermietung } from "../optionen/optionValues.js";
 import map from "lodash/map.js";
 import tinycolor from "tinycolor2";
 function einnahme(betrag) {
@@ -116,7 +117,7 @@ function excelRowVeranstaltung({ veranstaltung, klavierStimmerDefault, urlRoot, 
             datum: vermietung.startDatumUhrzeit.toJSDate,
             titel: vermietung.kopf.titel,
             url: `${urlRoot}${vermietung.fullyQualifiedUrl}`,
-            color: "#f6eee1",
+            color: colorVermietung,
             typ: "Vermietung",
             gage: ausgabe(kosten.gagenTotalEUR),
             technik: ausgabe(kosten.technikAngebot1EUR),

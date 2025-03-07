@@ -18,6 +18,7 @@ app.post("/riders", [checkOrgateam], (req, res) => {
         }
         store.saveRider(rider, req.user);
         resToJson(res, rider);
+        return;
     }
     resToJson(res, {});
 });

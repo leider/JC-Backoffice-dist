@@ -65,16 +65,20 @@ export default class Veranstaltung {
     }
     get color() {
         const color = this.isVermietung ? colorVermietung : this.kopf.color;
-        return this.ghost ? tinycolor(color).lighten(5).toHexString() : color;
+        return this.ghost ? tinycolor(color).brighten(5).toHexString() : color;
     }
     colorText(darkMode) {
-        const lightText = darkMode ? "#dcdcdc" : "#fff";
-        const darkText = darkMode ? "#666" : "#111";
+        const lightText = darkMode ? "#dcdcdc" : "#ffffff";
+        const darkText = darkMode ? "#666666" : "#111111";
+        const lightGhost = tinycolor(lightText).darken().toHexString();
+        const darkGhost = tinycolor(darkText).lighten(40).toHexString();
         const color = this.color;
-        if (Math.abs(tinycolor(lightText).getLuminance() - tinycolor(color).getLuminance()) < 0.3) {
-            return this.ghost ? tinycolor(darkText).lighten(30).toHexString() : darkText;
+        if (this.ghost) {
+            return tinycolor.readability(color, lightGhost) > 2 ? lightGhost : darkGhost;
         }
-        return this.ghost ? tinycolor(lightText).darken().toHexString() : lightText;
+        else {
+            return tinycolor.readability(color, lightText) > 2 ? lightText : darkText;
+        }
     }
     get initializedUrl() {
         return DatumUhrzeit.forJSDate(this.startDate).fuerCalendarWidget + "-" + Misc.normalizeString(this.kopf.titel || this.id || "");
@@ -107,16 +111,16 @@ export default class Veranstaltung {
     get tooltipInfos() {
         return "";
     }
-    asCalendarEvent(isOrgaTeam, color) {
+    asCalendarEvent(isOrgaTeam, darkMode) {
         return {
             start: this.startDate.toISOString(),
             end: this.endDate.toISOString(),
             title: this.kopf.titelMitPrefix,
             tooltip: this.tooltipInfos,
             linkTo: isOrgaTeam ? this.fullyQualifiedUrl : this.fullyQualifiedPreviewUrl,
-            backgroundColor: color,
-            textColor: this.colorText(false),
-            borderColor: !this.kopf.confirmed ? "#f8500d" : color,
+            backgroundColor: this.color,
+            textColor: this.colorText(darkMode),
+            borderColor: !this.kopf.confirmed ? "#f8500d" : this.color,
         };
     }
     reset() {

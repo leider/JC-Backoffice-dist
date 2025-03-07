@@ -25,6 +25,7 @@ export class PrintableBox {
         this.top = 0;
         this.width = 0;
         this.img = undefined;
+        this.isCircle = false;
         Object.assign(this, params);
     }
     get divStyleForImg() {
@@ -33,7 +34,10 @@ export class PrintableBox {
     get imgStyle() {
         return `width: ${this.img?.width}px; height: ${this.img?.height}px;`;
     }
-    get divStyleForBox() {
-        return this.divStyleForImg + "text-align: center; font-size: 10px; border: 0.2px solid gray;";
+    get divStyleForText() {
+        return (this.divStyleForImg +
+            `line-height: ${this.height}px;` +
+            "text-align: center; font-size: 10px; border: 0.2px solid gray;" +
+            `border-radius: ${this.isCircle ? "50%" : 0};`);
     }
 }

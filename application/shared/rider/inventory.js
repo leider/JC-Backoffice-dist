@@ -1,3 +1,29 @@
+export const extraEckig = {
+    category: "Extra",
+    id: "Extra Eckig 1",
+    title: "Eigener Inhalt",
+    width: 50,
+    height: 50,
+    level: 1,
+};
+export const extraRund = {
+    category: "Extra",
+    id: "Extra Rund 2",
+    title: "Runder Inhalt",
+    width: 50,
+    height: 50,
+    level: 1,
+    isCircle: true,
+};
+const drums = {
+    category: "Drums",
+    id: "DrumsYamaha",
+    title: "Drums (Yamaha)",
+    width: 200,
+    height: 200,
+    level: 0,
+    img: { src: "Drums.png", width: 200, height: 200 },
+};
 export const Inventory = [
     {
         category: "Keys",
@@ -30,24 +56,9 @@ export const Inventory = [
         img: { src: "Nord.png" },
         photo: { src: "NordStage.png" },
     },
-    {
-        category: "Drums",
-        id: "DrumsYamaha",
-        title: "Drums (Yamaha)",
-        width: 200,
-        height: 200,
-        level: 0,
-        img: { src: "Drums.png", width: 200, height: 200 },
-    },
-    {
-        category: "Drums",
-        id: "DrumsGretsch",
-        title: "Drums (Gretsch)",
-        width: 200,
-        height: 200,
-        level: 0,
-        img: { src: "Drums.png", width: 200, height: 200 },
-    },
+    { ...drums, id: "DrumsYamaha", title: "Drums (Yamaha)" },
+    { ...drums, id: "DrumsGretsch", title: "Drums (Gretsch)" },
+    { ...drums, id: "DrumsCustom", title: "Drums (Eigenes Set)" },
     {
         category: "Drums",
         id: "PercussionSet",
@@ -78,6 +89,6 @@ export const Inventory = [
     },
     { category: "Guitar", id: "Jazzchorus", title: "Roland Jazzchorus", width: 55, height: 24, level: 0, photo: { src: "Roland.png" } },
     { category: "Guitar", id: "Polytone 12", title: 'Polytone Amp 12"', width: 40, height: 35, level: 0, photo: { src: "Polytone.png" } },
-    { category: "Extra", id: "Extra", title: "Eigener Inhalt", width: 50, height: 50, level: 1 },
-    { category: "Extra", id: "Extra", title: "Runder Inhalt", width: 50, height: 50, level: 1, isCircle: true },
+    extraEckig,
+    extraRund,
 ];
