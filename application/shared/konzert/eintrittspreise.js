@@ -58,6 +58,6 @@ export default class Eintrittspreise {
         return 0.8 * this.regulaer + 0.1 * this.ermaessigt + 0.1 * this.mitglied;
     }
     get erwarteterEintritt() {
-        return this.erwarteteBesucher * this.eintrittspreisSchnitt;
+        return this.erwarteteBesucher * (this.frei ? 10 : this.eintrittspreisSchnitt);
     }
 }
