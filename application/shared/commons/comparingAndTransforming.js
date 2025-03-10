@@ -12,6 +12,9 @@ function stripNullOrUndefined(data) {
     if (!data) {
         return data;
     }
+    if (Array.isArray(data)) {
+        data.sort();
+    }
     forEach(keys(data), (key) => {
         const dataCasted = data;
         if (dataCasted[key] === null || dataCasted[key] === undefined) {
@@ -52,7 +55,10 @@ export function withoutNullOrUndefinedStrippedBy(data, propertiesToIgnore) {
     return stripNullOrUndefined(clone);
 }
 export function areDifferentForHistoryEntries(left, right, propertiesToIgnore) {
-    return !!keys(differenceForAsObject(left, right, propertiesToIgnore)).length;
+    const { neu, alt } = differenceForAsObject(left, right, propertiesToIgnore);
+    const neuNotEmpty = !!keys(neu).length;
+    const altNotEmpty = !!keys(alt).length;
+    return neuNotEmpty || altNotEmpty;
 }
 export function areDifferent(left, right, propertiesToIgnore) {
     if (!left || !keys(left).length) {
@@ -65,17 +71,9 @@ export function differenceForAsObject(left = {}, right = {}, propertiesToIgnore)
     const b = withoutNullOrUndefinedStrippedBy(right, propertiesToIgnore);
     const diffAtoB = detailedDiff(a, b);
     const diffBtoA = detailedDiff(b, a);
-    const diff = {};
-    if (!(keys(diffAtoB.updated || {}).length === 0 && keys(diffBtoA.updated || {}).length === 0)) {
-        diff.geändert = { neu: diffAtoB.updated, alt: diffBtoA.updated };
-    }
-    if (keys(diffAtoB.added ?? {}).length) {
-        diff.hinzugefügt = diffAtoB.added;
-    }
-    if (keys(diffAtoB.deleted ?? {}).length) {
-        diff.gelöscht = diffAtoB.deleted;
-    }
-    return diff;
+    const mergedNeu = Object.assign(diffAtoB.updated ?? {}, diffAtoB.added ?? {});
+    const mergedAlt = Object.assign(diffBtoA.updated ?? {}, diffAtoB.deleted ?? {});
+    return { neu: mergedNeu, alt: mergedAlt };
 }
 export function logDiffForDirty(initial, current, enable = false) {
     if (!enable) {
