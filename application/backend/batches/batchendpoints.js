@@ -14,6 +14,7 @@ import { checkStaff } from "./sendMailsStaffReminder.js";
 import { checkBar } from "./sendMailsNightlyBar.js";
 import { informAdmin } from "./sendMailToAdmin.js";
 import map from "lodash/map.js";
+import { checkMaster } from "./sendMailsMasterFehlt.js";
 const logger = loggers.get("application");
 const app = express();
 async function backupDatabase(targetDir) {
@@ -35,6 +36,7 @@ async function nightlyMails() {
         remindForProgrammheft(now),
         checkStaff(now),
         checkBar(now),
+        checkMaster(now),
     ]);
     const jobtypes = ["Presse", "Fluegel", "Photo", "TextFehlt", "Kasse", "Programmheft", "Staff", "Bar"];
     const typedResults = map(results, (jobResult, index) => ({ type: jobtypes[index], jobResult }));

@@ -42,6 +42,12 @@ function preisprofileInitial() {
         { name: "38,00", regulaer: 38, rabattErmaessigt: 3, rabattMitglied: 7 },
     ];
 }
+function sortKontakte(kontakte) {
+    if (!kontakte) {
+        return [];
+    }
+    return map(kontakte, (kontakt) => new Kontakt(kontakt)).sort((a, b) => a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase()));
+}
 export default class OptionValues {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     static fromJSON(object) {
@@ -76,11 +82,9 @@ export default class OptionValues {
                     }
                     return a.regulaer > b.regulaer ? 1 : -1;
                 }),
-                typenPlus: (object.typenPlus ?? [])
-                    //.map((typ: string) => ({ name: typ, color: colorForTyp(typ) }))
-                    .sort((a, b) => a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase())),
-                agenturen: map(object.agenturen, (agentur) => new Kontakt(agentur)),
-                hotels: map(object.hotels, (hotel) => new Kontakt(hotel)),
+                typenPlus: (object.typenPlus ?? []).sort((a, b) => a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase())),
+                agenturen: sortKontakte(object.agenturen),
+                hotels: sortKontakte(object.hotels),
             });
         }
     }

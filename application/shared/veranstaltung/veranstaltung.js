@@ -24,6 +24,7 @@ export default class Veranstaltung {
         this.staff = new Staff();
         this.technik = new Technik();
         this.brauchtPresse = true;
+        this.booker = [];
         if (object) {
             Object.assign(this, {
                 id: object.id,
@@ -38,6 +39,7 @@ export default class Veranstaltung {
                 presse: new Presse(object.presse),
                 staff: new Staff(object.staff),
                 technik: new Technik(object.technik),
+                booker: object.booker,
             });
         }
         else {
