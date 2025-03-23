@@ -8,10 +8,6 @@ export default class Vertrag {
     static get sprachen() {
         return ["Deutsch", "Englisch", "Regional"];
     }
-    /* eslint-disable-next-line  @typescript-eslint/no-explicit-any*/
-    toJSON() {
-        return Object.assign({}, this);
-    }
     constructor(object) {
         this.art = "Jazzclub";
         this.sprache = "Deutsch";

@@ -3,10 +3,6 @@ import Misc from "../commons/misc.js";
 import isString from "lodash/isString.js";
 import keys from "lodash/keys.js";
 export default class Kasse {
-    /* eslint-disable-next-line  @typescript-eslint/no-explicit-any*/
-    toJSON() {
-        return Object.assign({}, this);
-    }
     constructor(object) {
         this.anfangsbestandEUR = 0;
         this.ausgabeBankEUR = 0;

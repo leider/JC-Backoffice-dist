@@ -21,7 +21,8 @@ app.post("/", (req, res) => {
             }
             const anonymous = new User({ id: "anonymous", name: "Rider Anonymous" });
             store.saveRider(rider, anonymous);
-            return resToJson(res, rider);
+            resToJson(res, rider);
+            return;
         }
     }
     res.sendStatus(500);

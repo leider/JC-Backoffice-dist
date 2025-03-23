@@ -9,7 +9,6 @@ import { resToJson } from "../lib/commons/replies.js";
 import { calculateChangedAndDeleted } from "jc-shared/commons/compareObjects.js";
 import misc from "jc-shared/commons/misc.js";
 import { checkOrgateam } from "./checkAccessHandlers.js";
-import invokeMap from "lodash/invokeMap.js";
 const app = express();
 app.get("/optionen", (req, res) => {
     resToJson(res, store.get());
@@ -39,7 +38,7 @@ app.get("/termine", (req, res) => {
 app.post("/termine", [checkOrgateam], (req, res) => {
     const oldTermine = terminstore.alle();
     const newTermine = misc.toObjectList(Termin, req.body);
-    const { changed, deletedIds } = calculateChangedAndDeleted(invokeMap(newTermine, "toJSON"), invokeMap(oldTermine, "toJSON"));
+    const { changed, deletedIds } = calculateChangedAndDeleted(newTermine, oldTermine);
     terminstore.saveAll(changed, req.user);
     terminstore.removeAll(deletedIds, req.user);
     resToJson(res, terminstore.alle());

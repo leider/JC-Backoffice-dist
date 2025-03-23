@@ -14,10 +14,6 @@ export default class Eintrittspreise {
             rabattMitglied: object.rabattMitglied || 0,
         };
     }
-    /* eslint-disable-next-line  @typescript-eslint/no-explicit-any*/
-    toJSON() {
-        return Object.assign({}, this);
-    }
     constructor(object) {
         this.preisprofil = { name: "Freier Eintritt", regulaer: 0, rabattErmaessigt: 0, rabattMitglied: 0 };
         this.erwarteteBesucher = 0;

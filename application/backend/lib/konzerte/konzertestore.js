@@ -42,8 +42,7 @@ export default {
         return misc.toObject(Konzert, result);
     },
     saveKonzert(konzert, user) {
-        const object = konzert.toJSON();
-        persistence.save(object, user);
+        persistence.save(konzert, user);
         return konzert;
     },
     deleteKonzertById(id, user) {

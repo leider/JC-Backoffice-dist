@@ -106,10 +106,6 @@ export default class MailRule {
     static fromJSON(object) {
         return new MailRule(object);
     }
-    /* eslint-disable-next-line  @typescript-eslint/no-explicit-any*/
-    toJSON() {
-        return Object.assign({}, this);
-    }
     constructor(object) {
         this.id = "";
         this.name = "";

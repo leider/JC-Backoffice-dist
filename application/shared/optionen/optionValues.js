@@ -53,9 +53,6 @@ export default class OptionValues {
     static fromJSON(object) {
         return new OptionValues(object);
     }
-    toJSON() {
-        return Object.assign({}, this);
-    }
     constructor(object) {
         this.id = "instance";
         this.hotelpreise = [];
@@ -71,12 +68,12 @@ export default class OptionValues {
         this.preisKlavierstimmer = 125;
         if (object) {
             Object.assign(this, object, {
-                kooperationen: sortByNameCaseInsensitive(object.kooperationen || []),
-                genres: sortByNameCaseInsensitive(object.genres || []),
-                backlineJazzclub: sortByNameCaseInsensitive(object.backlineJazzclub || []),
-                backlineRockshop: sortByNameCaseInsensitive(object.backlineRockshop || []),
-                artists: sortByNameCaseInsensitive(object.artists || []),
-                preisprofile: (object.preisprofile || preisprofileInitial()).sort((a, b) => {
+                kooperationen: sortByNameCaseInsensitive(object.kooperationen),
+                genres: sortByNameCaseInsensitive(object.genres),
+                backlineJazzclub: sortByNameCaseInsensitive(object.backlineJazzclub),
+                backlineRockshop: sortByNameCaseInsensitive(object.backlineRockshop),
+                artists: sortByNameCaseInsensitive(object.artists),
+                preisprofile: (object.preisprofile ?? preisprofileInitial()).sort((a, b) => {
                     if (a.regulaer === b.regulaer) {
                         return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase());
                     }
@@ -89,7 +86,11 @@ export default class OptionValues {
         }
     }
     addOrUpdateKontakt(kontaktKey, kontakt, selection) {
-        if (!(selection || "[temporär]").match(/\[temporär]/)) {
+        if ("[temporär]" !== selection) {
+            if (!kontakt.name) {
+                // we do nothing if name not given
+                return;
+            }
             const ourCollection = kontaktKey === "agenturen" ? this.agenturen : this.hotels;
             remove(ourCollection, (k) => k.name === kontakt.name);
             ourCollection.push(kontakt);

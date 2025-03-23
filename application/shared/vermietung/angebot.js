@@ -2,10 +2,6 @@ import renderer from "../commons/renderer.js";
 import Misc from "../commons/misc.js";
 import keys from "lodash/keys.js";
 export default class Angebot {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    toJSON() {
-        return Object.assign({}, this);
-    }
     constructor(object) {
         this.saalmiete = 0;
         this.saalmieteRabatt = 0;

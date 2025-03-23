@@ -42,8 +42,7 @@ export default {
         return misc.toObject(Vermietung, result);
     },
     saveVermietung: function saveVermietung(vermietung, user) {
-        const object = vermietung.toJSON();
-        persistence.save(object, user);
+        persistence.save(vermietung, user);
         return vermietung;
     },
     deleteVermietungById: function deleteVermietungById(id, user) {

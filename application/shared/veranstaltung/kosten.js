@@ -17,10 +17,6 @@ function formatNumberTwoDigits(number) {
     }).format(number || 0);
 }
 class Kosten {
-    /* eslint-disable-next-line  @typescript-eslint/no-explicit-any*/
-    toJSON() {
-        return Object.assign({}, this);
-    }
     constructor(object) {
         this.backlineEUR = 0;
         this.saalmiete = 0;

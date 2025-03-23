@@ -7,24 +7,6 @@ import Vertrag from "./vertrag.js";
 import Veranstaltung from "../veranstaltung/veranstaltung.js";
 import filter from "lodash/filter.js";
 export default class Konzert extends Veranstaltung {
-    toJSON() {
-        const result = {};
-        Object.assign(result, this, {
-            agentur: this.agentur.toJSON(),
-            artist: this.artist.toJSON(),
-            eintrittspreise: this.eintrittspreise.toJSON(),
-            hotel: this.hotel.toJSON(),
-            kasse: this.kasse.toJSON(),
-            kopf: this.kopf.toJSON(),
-            kosten: this.kosten.toJSON(),
-            presse: this.presse.toJSON(),
-            staff: this.staff.toJSON(),
-            technik: this.technik.toJSON(),
-            unterkunft: this.unterkunft.toJSON(),
-            vertrag: this.vertrag.toJSON(),
-        });
-        return result;
-    }
     constructor(object) {
         super(object);
         this.changelist = undefined;

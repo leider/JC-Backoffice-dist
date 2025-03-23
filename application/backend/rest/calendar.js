@@ -12,6 +12,7 @@ import { icalToTerminEvents, parseIcal } from "jc-shared/commons/iCalendarUtils.
 import kalenderEventsService from "../lib/optionen/kalenderEventsService.js";
 import map from "lodash/map.js";
 import filter from "lodash/filter.js";
+import identity from "lodash/identity.js";
 const app = express();
 function asCalendarEvent(veranstaltung, user, darkMode) {
     return veranstaltung.asCalendarEvent(user.accessrights.isOrgaTeam, darkMode);
@@ -51,7 +52,7 @@ app.get("/fullcalendarevents.json", async (req, res) => {
     const icals = filter(cals?.icals, (ical) => (options ? options.icals?.includes(ical.typ) : true));
     const termineForIcals = await Promise.all(map(icals, termineForIcal));
     const events = termine
-        .concat(flatMap(termineForIcals, (x) => x))
+        .concat(flatMap(termineForIcals, (identity)))
         .concat(konzerte)
         .concat(vermietungen);
     resToJson(res, events);

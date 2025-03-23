@@ -1,10 +1,6 @@
 import misc from "../commons/misc.js";
 import keys from "lodash/keys.js";
 export default class Technik {
-    /* eslint-disable-next-line  @typescript-eslint/no-explicit-any*/
-    toJSON() {
-        return Object.assign({}, this);
-    }
     constructor(object) {
         this.dateirider = [];
         this.backlineJazzclub = [];

@@ -6,11 +6,10 @@ import store from "../lib/vermietungen/vermietungenstore.js";
 import { checkOrgateam } from "./checkAccessHandlers.js";
 import { saveVermietungToShare, vermietungVertragToBuchhaltung } from "../lib/pdf/pdfGeneration.js";
 import { filterUnbestaetigteFuerJedermann } from "../lib/vermietungen/vermietungenService.js";
-import invokeMap from "lodash/invokeMap.js";
 const app = express();
 async function standardHandler(req, res, vermietungen) {
     const user = req.user;
-    resToJson(res, invokeMap(filterUnbestaetigteFuerJedermann(vermietungen, user), "toJSON"));
+    resToJson(res, filterUnbestaetigteFuerJedermann(vermietungen, user));
 }
 function saveAndReply(req, res, vermietung) {
     resToJson(res, store.saveVermietung(vermietung, req.user));

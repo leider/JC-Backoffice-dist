@@ -9,9 +9,6 @@ export class Rider {
             boxes: object?.boxes || [],
         });
     }
-    toJSON() {
-        return Object.assign({}, this);
-    }
 }
 export class PrintableBox {
     constructor(params) {

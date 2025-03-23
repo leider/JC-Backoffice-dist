@@ -14,7 +14,7 @@ export default {
         persistence.removeAllByIds(ids, user);
     },
     save: function save(mailRule, user) {
-        persistence.save(mailRule.toJSON(), user);
+        persistence.save(mailRule, user);
         return mailRule;
     },
     saveAll: function saveAll(mailRules, user) {

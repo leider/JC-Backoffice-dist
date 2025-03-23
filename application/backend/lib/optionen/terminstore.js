@@ -12,7 +12,7 @@ export default {
         return misc.toObjectList(Termin, result);
     },
     save: function save(termin, user) {
-        persistence.save(termin.toJSON(), user);
+        persistence.save(termin, user);
         return termin;
     },
     saveAll: function saveAll(termine, user) {

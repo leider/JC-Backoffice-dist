@@ -9,11 +9,10 @@ import { kassenzettelToBuchhaltung } from "../lib/pdf/pdfGeneration.js";
 import { checkAbendkasse, checkOrgateam } from "./checkAccessHandlers.js";
 import parseFormData from "../lib/commons/parseFormData.js";
 import find from "lodash/find.js";
-import invokeMap from "lodash/invokeMap.js";
 const app = express();
 function standardHandler(res, user, konzerte) {
     const result = konzerteService.filterUnbestaetigteFuerJedermann(konzerte, user);
-    resToJson(res, invokeMap(result, "toJSON"));
+    resToJson(res, result);
 }
 function saveAndReply(req, res, konzert) {
     const result = store.saveKonzert(konzert, req.user);

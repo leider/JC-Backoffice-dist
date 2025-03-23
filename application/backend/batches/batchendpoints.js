@@ -38,7 +38,7 @@ async function nightlyMails() {
         checkBar(now),
         checkMaster(now),
     ]);
-    const jobtypes = ["Presse", "Fluegel", "Photo", "TextFehlt", "Kasse", "Programmheft", "Staff", "Bar"];
+    const jobtypes = ["Presse", "Fluegel", "Photo", "TextFehlt", "Kasse", "Programmheft", "Staff", "Bar", "Master"];
     const typedResults = map(results, (jobResult, index) => ({ type: jobtypes[index], jobResult }));
     return informAdmin(typedResults);
 }

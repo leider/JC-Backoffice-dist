@@ -18,7 +18,7 @@ export default {
         return misc.toObject(FerienIcals, result);
     },
     save: function save(object, user) {
-        persistence.save(object.toJSON ? object.toJSON() : object, user);
+        persistence.save(object, user);
         return object;
     },
 };

@@ -1,10 +1,6 @@
 import { colorDefault } from "../optionen/optionValues.js";
 import keys from "lodash/keys.js";
 export default class Kopf {
-    /* eslint-disable-next-line  @typescript-eslint/no-explicit-any*/
-    toJSON() {
-        return Object.assign({}, this);
-    }
     constructor(object) {
         this.beschreibung = "";
         this.eventTyp = "";

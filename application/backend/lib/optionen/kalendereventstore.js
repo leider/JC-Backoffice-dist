@@ -9,7 +9,7 @@ export default {
         return misc.toObject(KalenderEvents, result);
     },
     save: function save(event) {
-        persistence.save(event.toJSON(), new User({ name: "System" }));
+        persistence.save(event, new User({ name: "System" }));
         return event;
     },
 };

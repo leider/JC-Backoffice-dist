@@ -1,9 +1,5 @@
 import keys from "lodash/keys.js";
 export default class Kontakt {
-    /* eslint-disable-next-line  @typescript-eslint/no-explicit-any*/
-    toJSON() {
-        return Object.assign({}, this);
-    }
     constructor(object) {
         this.adresse = "";
         this.ansprechpartner = "";

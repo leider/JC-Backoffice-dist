@@ -2,9 +2,6 @@ import compact from "lodash/compact.js";
 import flatten from "lodash/flatten.js";
 import keys from "lodash/keys.js";
 export default class Staff {
-    toJSON() {
-        return Object.assign({}, this);
-    }
     constructor(object) {
         this.techniker = [];
         this.technikerV = [];

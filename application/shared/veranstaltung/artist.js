@@ -2,9 +2,6 @@ import misc from "../commons/misc.js";
 import Misc from "../commons/misc.js";
 import keys from "lodash/keys.js";
 export default class Artist {
-    toJSON() {
-        return Object.assign({}, this);
-    }
     constructor(object) {
         this.bandname = "";
         this.name = [];

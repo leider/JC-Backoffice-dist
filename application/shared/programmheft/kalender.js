@@ -3,6 +3,7 @@ import DatumUhrzeit from "../commons/DatumUhrzeit.js";
 import { Event } from "./Event.js";
 import map from "lodash/map.js";
 import invokeMap from "lodash/invokeMap.js";
+import sortBy from "lodash/sortBy.js";
 export default class Kalender {
     constructor(object) {
         this.events = [];
@@ -26,8 +27,7 @@ export default class Kalender {
         const otherDatum = DatumUhrzeit.forYYYYslashMM(otherKalId);
         const differenz = otherDatum.differenzInMonaten(thisDatum);
         const result = invokeMap(this.events, "cloneAndMoveBy", { monate: differenz });
-        result.sort((a, b) => a.start.localeCompare(b.start));
-        return result;
+        return sortBy(result, ["start"]);
     }
     sortEvents() {
         this.events.sort((a, b) => a.start?.localeCompare(b.start));

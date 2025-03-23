@@ -3,20 +3,6 @@ import Angebot from "./angebot.js";
 import Kontakt from "../veranstaltung/kontakt.js";
 import Veranstaltung from "../veranstaltung/veranstaltung.js";
 export default class Vermietung extends Veranstaltung {
-    toJSON() {
-        const result = {};
-        Object.assign(result, this, {
-            artist: this.artist.toJSON(),
-            kopf: this.kopf.toJSON(),
-            kosten: this.kosten.toJSON(),
-            presse: this.presse.toJSON(),
-            staff: this.staff.toJSON(),
-            technik: this.technik.toJSON(),
-            angebot: this.angebot.toJSON(),
-            vertragspartner: this.vertragspartner.toJSON(),
-        });
-        return result;
-    }
     constructor(object) {
         super(object ?? { brauchtPresse: false });
         this.saalmiete = undefined;

@@ -8,7 +8,7 @@ export default {
         return misc.toObject(Rider, result);
     },
     saveRider: function saveRider(object, user) {
-        persistence.save(object.toJSON(), user);
+        persistence.save(object, user);
         return object;
     },
 };

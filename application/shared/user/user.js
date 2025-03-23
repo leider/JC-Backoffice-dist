@@ -1,5 +1,6 @@
 import Accessrights from "./accessrights.js";
 import isNil from "lodash/isNil.js";
+import cloneDeep from "lodash/cloneDeep.js";
 export const SUPERUSERS = "superusers";
 export const BOOKING = "bookingTeam";
 export const ORGA = "orgaTeam";
@@ -11,22 +12,14 @@ export default class User {
         this.rechte = [];
         this.kassenfreigabe = false;
         this.mailinglisten = [];
-        delete this.accessrightsTransient;
         this.id = object.id;
         Object.assign(this, object, {
             kassenfreigabe: object.kassenfreigabe || object.rechte?.includes("kassenfreigabe"),
             gruppen: Array.isArray(object.gruppen) ? object.gruppen[0] : object.gruppen,
         });
     }
-    /* eslint-disable-next-line  @typescript-eslint/no-explicit-any*/
-    toJSON() {
-        const result = Object.assign({}, this);
-        delete result.accessrightsTransient;
-        return result;
-    }
-    /* eslint-disable-next-line  @typescript-eslint/no-explicit-any*/
-    toJSONWithoutPass() {
-        const result = this.toJSON();
+    get withoutPass() {
+        const result = cloneDeep(this);
         delete result.hashedPassword;
         delete result.salt;
         return result;
@@ -74,10 +67,7 @@ export default class User {
         }
     }
     get accessrights() {
-        if (!this.accessrightsTransient) {
-            this.accessrightsTransient = new Accessrights(this);
-        }
-        return this.accessrightsTransient;
+        return new Accessrights(this);
     }
     get asUserAsOption() {
         return { label: this.name, value: this.id, kann: this.kannSections };

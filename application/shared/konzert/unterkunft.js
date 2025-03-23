@@ -2,10 +2,6 @@ import DatumUhrzeit from "../commons/DatumUhrzeit.js";
 import Misc from "../commons/misc.js";
 import keys from "lodash/keys.js";
 export default class Unterkunft {
-    /* eslint-disable-next-line  @typescript-eslint/no-explicit-any*/
-    toJSON() {
-        return Object.assign({}, this);
-    }
     constructor(object, veranstaltungstagAsDatumUhrzeit, kuenstlerListe) {
         this.einzelNum = 0;
         this.doppelNum = 0;
