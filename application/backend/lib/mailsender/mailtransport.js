@@ -1,6 +1,6 @@
 import * as nodemailer from "nodemailer";
 import * as winston from "winston";
-import conf from "jc-shared/commons/simpleConfigure.js";
+import conf from "../../simpleConfigure.js";
 import MailBodyRenderer from "./mailbodyRenderer.js";
 const logger = winston.loggers.get("application");
 const transport = nodemailer.createTransport(conf.transportOptions ?? {

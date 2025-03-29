@@ -4,7 +4,7 @@ import filter from "lodash/filter.js";
 import map from "lodash/map.js";
 import fs from "fs";
 import path from "path";
-import conf from "jc-shared/commons/simpleConfigure.js";
+import conf from "../../simpleConfigure.js";
 const wikiUploadDir = conf.wikiUploadDir;
 export default {
     BLOG_ENTRY_FILE_PATTERN: "blog_*",

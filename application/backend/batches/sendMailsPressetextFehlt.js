@@ -1,5 +1,5 @@
 import { loggers } from "winston";
-import conf from "jc-shared/commons/simpleConfigure.js";
+import conf from "../simpleConfigure.js";
 import mailstore from "../lib/mailsender/mailstore.js";
 import mailtransport from "../lib/mailsender/mailtransport.js";
 import usersService from "../lib/users/usersService.js";

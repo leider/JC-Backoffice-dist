@@ -1,7 +1,7 @@
 import { loggers } from "winston";
 import mailstore from "../lib/mailsender/mailstore.js";
 import mailtransport from "../lib/mailsender/mailtransport.js";
-import conf from "jc-shared/commons/simpleConfigure.js";
+import conf from "../simpleConfigure.js";
 import { byDateRangeInAscendingOrder } from "./gigAndRentService.js";
 import VeranstaltungFormatter from "jc-shared/veranstaltung/VeranstaltungFormatter.js";
 import MailMessage from "jc-shared/mail/mailMessage.js";

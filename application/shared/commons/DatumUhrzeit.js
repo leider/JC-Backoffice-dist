@@ -9,7 +9,6 @@ import weekOfYear from "dayjs/plugin/weekOfYear.js";
 import "dayjs/locale/de.js";
 import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
-import conf from "./simpleConfigure.js";
 dayjs.extend(customParseFormat);
 dayjs.extend(duration);
 dayjs.extend(isSameOrBefore);
@@ -23,7 +22,7 @@ dayjs.extend(timezone);
 dayjs.tz.setDefault("Europe/Berlin");
 export default class DatumUhrzeit {
     constructor(dateTime) {
-        this.val = dateTime && dateTime.isValid() ? dateTime : dayjs(conf.nowForDevelopment);
+        this.val = dateTime && dateTime.isValid() ? dateTime : dayjs();
     }
     // Konstruktoren
     static forYYMM(YYMM) {

@@ -1,5 +1,5 @@
 import Database from "better-sqlite3";
-import conf from "jc-shared/commons/simpleConfigure.js";
+import conf from "../../simpleConfigure.js";
 import { loggers } from "winston";
 import { areDifferentForHistoryEntries } from "jc-shared/commons/comparingAndTransforming.js";
 import map from "lodash/map.js";

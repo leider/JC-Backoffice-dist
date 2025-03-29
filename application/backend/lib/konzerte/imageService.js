@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import store from "./konzertestore.js";
-import conf from "jc-shared/commons/simpleConfigure.js";
+import conf from "../../simpleConfigure.js";
 import map from "lodash/map.js";
 import sortBy from "lodash/sortBy.js";
 async function renameImage(oldname, newname, konzertIds, user) {

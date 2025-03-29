@@ -5,7 +5,7 @@ import path from "path";
 import DatumUhrzeit from "jc-shared/commons/DatumUhrzeit.js";
 import store from "./konzertestore.js";
 import groupBy from "lodash/groupBy.js";
-import conf from "jc-shared/commons/simpleConfigure.js";
+import conf from "../../simpleConfigure.js";
 import map from "lodash/map.js";
 import flatMap from "lodash/flatMap.js";
 import forEach from "lodash/forEach.js";

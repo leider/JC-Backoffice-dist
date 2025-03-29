@@ -1,4 +1,3 @@
-import conf from "jc-shared/commons/simpleConfigure.js";
 import map from "lodash/map.js";
 export default class MailMessage {
     constructor({ subject }) {
@@ -11,7 +10,6 @@ export default class MailMessage {
         const message = new MailMessage({ subject });
         message.body = body;
         message.bcc = bcc;
-        message.from = MailMessage.formatEMailAddress(`${user.name} via backoffice.jazzclub.de`, conf.senderAddress);
         message.replyTo = MailMessage.formatEMailAddress(user.name, user.email);
         return message;
     }
