@@ -96,9 +96,6 @@ export default class Kasse {
     get endbestandEUR() {
         return this.anfangsbestandEUR + this.einnahmeTotalEUR - this.ausgabenTotalEUR;
     }
-    set endbestandEUR(betrag) {
-        // no op
-    }
     // FREIGABE
     get istFreigegeben() {
         return !!this.kassenfreigabe;
