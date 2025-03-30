@@ -40,7 +40,8 @@ export default function (app, forDev) {
     app.use(express.json());
     app.use(compress());
     if (!forDev) {
-        app.use("/vue", history());
+        app.use("/", history());
+        //app.use("/vue", history());
         app.use("/rider", history());
     }
     app.use(express.static(path.join(__dirname, "static"), {
