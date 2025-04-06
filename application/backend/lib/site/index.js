@@ -29,7 +29,7 @@ app.locals.pretty = true;
 const refreshTTL = conf.refreshTTL || 7 * 24 * 60 * 60 * 1000; // days*hours*mins*secs*millis
 const jwtTTL = conf.jwtTTL || 15 * 60; // 15 minutes
 app.get("/", (req, res) => {
-    return res.redirect("/veranstaltungen");
+    return res.redirect("/vue/veranstaltungen");
 });
 function createToken(req, res, name) {
     const ttl = refreshTTL;

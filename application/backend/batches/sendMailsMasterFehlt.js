@@ -14,7 +14,7 @@ function toFullQualifiedUrl(prefix, localUrl) {
     function trimLeadingAndTrailingSlash(string) {
         return string.replace(/(^\/)|(\/$)/g, "");
     }
-    return conf.publicUrlPrefix + "/" + trimLeadingAndTrailingSlash(prefix) + "/" + trimLeadingAndTrailingSlash(localUrl);
+    return conf.publicUrlPrefix + "/vue/" + trimLeadingAndTrailingSlash(prefix) + "/" + trimLeadingAndTrailingSlash(localUrl);
 }
 function masterFehlt(konzert) {
     return konzert.staff.masterFehlt && konzert.kopf.confirmed;

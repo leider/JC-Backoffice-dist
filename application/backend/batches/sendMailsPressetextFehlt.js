@@ -13,7 +13,7 @@ async function sendMail(kaputte) {
     const prefix = conf.publicUrlPrefix;
     function presseTemplateInternal(ver) {
         // für interne Mails
-        return `### [${ver.kopf.titelMitPrefix}](${prefix}${ver.fullyQualifiedUrl}?page=presse)
+        return `### [${ver.kopf.titelMitPrefix}](${prefix}/vue${ver.fullyQualifiedUrl}?page=presse)
 #### ${ver.startDatumUhrzeit.fuerPresse} ${ver.kopf.presseInEcht}
 
 `;

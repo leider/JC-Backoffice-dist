@@ -10,7 +10,7 @@ function toFullQualifiedUrl(prefix, localUrl) {
     function trimLeadingAndTrailingSlash(string) {
         return string.replace(/(^\/)|(\/$)/g, "");
     }
-    return conf.publicUrlPrefix + "/" + trimLeadingAndTrailingSlash(prefix) + "/" + trimLeadingAndTrailingSlash(localUrl);
+    return conf.publicUrlPrefix + "/vue/" + trimLeadingAndTrailingSlash(prefix) + "/" + trimLeadingAndTrailingSlash(localUrl);
 }
 async function sendMail(verMitUser) {
     const prefix = conf.publicUrlPrefix;
@@ -18,7 +18,7 @@ async function sendMail(verMitUser) {
     const user = verMitUser.user;
     const markdownToSend = `## Hallo ${user.name}! Bei folgender Veranstaltung bist Du im Staff eingetragen!:
 
-[${veranstaltung.kopf.titelMitPrefix} am ${veranstaltung.datumForDisplayShort} ${veranstaltung.kopf.presseInEcht}](${prefix}${veranstaltung.fullyQualifiedUrl}?page=allgemeines)
+[${veranstaltung.kopf.titelMitPrefix} am ${veranstaltung.datumForDisplayShort} ${veranstaltung.kopf.presseInEcht}](${prefix}/vue${veranstaltung.fullyQualifiedUrl}?page=allgemeines)
 
 --- 
 <a href="${toFullQualifiedUrl("team", "")}">Zur Teamseite</a>`;
