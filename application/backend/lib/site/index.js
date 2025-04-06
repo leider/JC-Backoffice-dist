@@ -126,7 +126,7 @@ app.post("/logout", (req, res) => {
     res.clearCookie("refresh-token").send({});
 });
 const uploadDir = conf.uploadDir;
-const placeholder = path.join(__dirname, "../../static/upload/../No-Image-Placeholder.svg");
+const placeholder = path.join(__dirname, "../../static/placeholder.png");
 app.get("/imagepreview/:filename", (req, res, next) => {
     function sendOrHandleError(err, buffer) {
         if (err) {
