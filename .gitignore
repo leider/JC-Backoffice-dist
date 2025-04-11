@@ -1,6 +1,7 @@
 /.idea/
-/application/node_modules/
 /application/.yarn/install-state.gz
+/application/backend/static/static/reporting/niklas.png
+/application/node_modules/
 /config/
 /db/
 /log/
