@@ -6,6 +6,8 @@ import misc from "jc-shared/commons/misc.js";
 const persistence = pers("veranstaltungenstore", ["startDate", "endDate", "url"]);
 const logger = winston.loggers.get("transactions");
 import conf from "../../simpleConfigure.js";
+import optionenstore from "../optionen/optionenstore.js";
+import groupBy from "lodash/groupBy.js";
 function byDateRange(rangeFrom, rangeTo, sortOrder) {
     const result = persistence.listByField(`startDate < '${rangeTo.toISOString}' AND endDate > '${rangeFrom.toISOString}'`, `startDate ${sortOrder}`);
     return misc.toObjectList(Konzert, result);
@@ -39,6 +41,10 @@ export default {
         return misc.toObject(Konzert, result);
     },
     saveKonzert(konzert, user) {
+        // update eventTypRich on save
+        const optionen = optionenstore.get();
+        const typByName = groupBy(optionen?.typenPlus || [], "name");
+        konzert.kopf.eventTypRich = typByName[konzert.kopf.eventTyp]?.[0];
         persistence.save(konzert, user);
         return konzert;
     },
