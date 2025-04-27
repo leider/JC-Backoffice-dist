@@ -14,17 +14,17 @@ import map from "lodash/map.js";
 import filter from "lodash/filter.js";
 import identity from "lodash/identity.js";
 const app = express();
-function asCalendarEvent(veranstaltung, user, darkMode) {
-    return veranstaltung.asCalendarEvent(user.accessrights.isOrgaTeam, darkMode);
+function asCalendarEvent(veranstaltung, user) {
+    return veranstaltung.asCalendarEvent(user.accessrights.isOrgaTeam);
 }
-function eventsBetween(start, end, user, darkMode) {
+function eventsBetween(start, end, user) {
     const konzerte = store.byDateRangeInAscendingOrder(start, end);
     const unbest = konzerteService.filterUnbestaetigteFuerJedermann(konzerte, user);
-    return map(unbest, (ver) => asCalendarEvent(ver, user, darkMode));
+    return map(unbest, (ver) => asCalendarEvent(ver, user));
 }
-function vermietungenBetween(start, end, user, darkMode) {
+function vermietungenBetween(start, end, user) {
     const vermietungen = vermietungenstore.byDateRangeInAscendingOrder(start, end);
-    return map(filterUnbestaetigteFuerJedermann(vermietungen, user), (ver) => asCalendarEvent(ver, user, darkMode));
+    return map(filterUnbestaetigteFuerJedermann(vermietungen, user), (ver) => asCalendarEvent(ver, user));
 }
 async function termineForIcal(ical) {
     const result = await kalenderEventsService.retrieveEvents(ical);
@@ -44,11 +44,10 @@ app.get("/fullcalendarevents.json", async (req, res) => {
     const options = req.query.options
         ? JSON.parse(req.query.options)
         : undefined;
-    const darkMode = req.query.isDarkMode === "true";
     const cals = optionenstore.icals();
     const termine = termineAsEventsBetween(start, end, options);
-    const konzerte = eventsBetween(start, end, req.user, darkMode);
-    const vermietungen = vermietungenBetween(start, end, req.user, darkMode);
+    const konzerte = eventsBetween(start, end, req.user);
+    const vermietungen = vermietungenBetween(start, end, req.user);
     const icals = filter(cals?.icals, (ical) => (options ? options.icals?.includes(ical.typ) : true));
     const termineForIcals = await Promise.all(map(icals, termineForIcal));
     const events = termine

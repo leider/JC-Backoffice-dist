@@ -1,5 +1,6 @@
 import DatumUhrzeit from "../commons/DatumUhrzeit.js";
 import Misc from "../commons/misc.js";
+import misc from "../commons/misc.js";
 import Artist from "./artist.js";
 import Kopf from "./kopf.js";
 import Kosten from "./kosten.js";
@@ -8,9 +9,7 @@ import Staff from "./staff.js";
 import Technik from "./technik.js";
 import dayjs from "dayjs";
 import times from "lodash/times.js";
-import { colorVermietung } from "../optionen/optionValues.js";
 import map from "lodash/map.js";
-import tinycolor from "tinycolor2";
 export default class Veranstaltung {
     constructor(object) {
         this.ghost = undefined; // for displaying multidays
@@ -66,21 +65,10 @@ export default class Veranstaltung {
         return map(ghostResults, (each) => this.asNew(each));
     }
     get color() {
-        const color = this.isVermietung ? colorVermietung : this.kopf.color;
-        return this.ghost ? tinycolor(color).brighten(5).toHexString() : color;
+        return `var(--jazz-${misc.normalizeString(this.kopf.eventTypRich?.name ?? "vermietung")}-color${this.ghost ? "-ghost)" : ")"}`;
     }
-    colorText(darkMode) {
-        const lightText = darkMode ? "#dcdcdc" : "#ffffff";
-        const darkText = darkMode ? "#666666" : "#111111";
-        const lightGhost = tinycolor(lightText).darken().toHexString();
-        const darkGhost = tinycolor(darkText).lighten(40).toHexString();
-        const color = this.color;
-        if (this.ghost) {
-            return tinycolor.readability(color, lightGhost) > 2 ? lightGhost : darkGhost;
-        }
-        else {
-            return tinycolor.readability(color, lightText) > 2 ? lightText : darkText;
-        }
+    colorText() {
+        return `var(--jazz-${misc.normalizeString(this.kopf.eventTypRich?.name ?? "vermietung")}-text-color${this.ghost ? "-ghost)" : ")"}`;
     }
     get initializedUrl() {
         return DatumUhrzeit.forJSDate(this.startDate).fuerCalendarWidget + "-" + Misc.normalizeString(this.kopf.titel || this.id || "");
@@ -106,14 +94,18 @@ export default class Veranstaltung {
     get datumForDisplay() {
         return this.startDatumUhrzeit.tagMonatJahrLang;
     }
-    get istVergangen() {
-        return this.startDatumUhrzeit.istVor(new DatumUhrzeit());
+    isDisplayedAbove(other, reverse = false) {
+        if (!other) {
+            return false;
+        }
+        const result = this.startDatumUhrzeit.istVor(other?.startDatumUhrzeit);
+        return reverse ? !result : result;
     }
     // eslint-disable-next-line lodash/prefer-constant
     get tooltipInfos() {
         return "";
     }
-    asCalendarEvent(isOrgaTeam, darkMode) {
+    asCalendarEvent(isOrgaTeam) {
         return {
             start: this.startDate.toISOString(),
             end: this.endDate.toISOString(),
@@ -121,7 +113,7 @@ export default class Veranstaltung {
             tooltip: this.tooltipInfos,
             linkTo: isOrgaTeam ? this.fullyQualifiedUrl : this.fullyQualifiedPreviewUrl,
             backgroundColor: this.color,
-            textColor: this.colorText(darkMode),
+            textColor: this.colorText(),
             borderColor: !this.kopf.confirmed ? "#f8500d" : this.color,
         };
     }
