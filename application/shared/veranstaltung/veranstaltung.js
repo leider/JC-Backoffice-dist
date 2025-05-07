@@ -94,6 +94,10 @@ export default class Veranstaltung {
     get datumForDisplay() {
         return this.startDatumUhrzeit.tagMonatJahrLang;
     }
+    // used in pug file !
+    get istVergangen() {
+        return this.startDatumUhrzeit.istVor(new DatumUhrzeit());
+    }
     isDisplayedAbove(other, reverse = false) {
         if (!other) {
             return false;
