@@ -64,14 +64,17 @@ export default class Veranstaltung {
         });
         return map(ghostResults, (each) => this.asNew(each));
     }
-    get color() {
-        return `var(--jazz-${misc.normalizeString(this.kopf.eventTypRich?.name ?? "vermietung")}-color${this.ghost ? "-ghost)" : ")"}`;
+    colorFor(infix) {
+        return `var(--jazz-${misc.normalizeString(this.kopf.eventTypRich?.name ?? "vermietung")}${infix}${this.ghost ? "-ghost)" : ")"}`;
     }
-    colorText() {
-        return `var(--jazz-${misc.normalizeString(this.kopf.eventTypRich?.name ?? "vermietung")}-text-color${this.ghost ? "-ghost)" : ")"}`;
+    get color() {
+        return this.colorFor("-color");
+    }
+    get colorText() {
+        return this.colorFor("-text-color");
     }
     get initializedUrl() {
-        return DatumUhrzeit.forJSDate(this.startDate).fuerCalendarWidget + "-" + Misc.normalizeString(this.kopf.titel || this.id || "");
+        return DatumUhrzeit.forJSDate(this.startDate).fuerCalendarWidget + "-" + Misc.normalizeString(this.kopf.titel ?? this.id ?? "");
     }
     initializeIdAndUrl() {
         this.url = this.initializedUrl;
@@ -117,7 +120,7 @@ export default class Veranstaltung {
             tooltip: this.tooltipInfos,
             linkTo: isOrgaTeam ? this.fullyQualifiedUrl : this.fullyQualifiedPreviewUrl,
             backgroundColor: this.color,
-            textColor: this.colorText(),
+            textColor: this.colorText,
             borderColor: !this.kopf.confirmed ? "#f8500d" : this.color,
         };
     }
