@@ -35,6 +35,17 @@ export default class Staff {
     get noStaffNeeded() {
         return this.technikerNotNeeded && this.technikerVNotNeeded && this.kasseNotNeeded && this.kasseVNotNeeded && this.merchandiseNotNeeded;
     }
+    get noOfRowsNeeded() {
+        if (this.noStaffNeeded) {
+            return 0;
+        }
+        return ((this.technikerNotNeeded ? 0 : 1) +
+            (this.technikerVNotNeeded ? 0 : 1) +
+            (this.kasseNotNeeded ? 0 : 1) +
+            (this.kasseVNotNeeded ? 0 : 1) +
+            (this.modNotNeeded ? 0 : 1) +
+            (this.ersthelferNotNeeded ? 0 : 1));
+    }
     get tooltipInfos() {
         if (this.noStaffNeeded) {
             return "";
