@@ -5,11 +5,8 @@ import { db } from "../lib/persistence/sqlitePersistence.js";
 import AdmZip from "adm-zip";
 import fs from "fs/promises";
 import DatumUhrzeit from "jc-shared/commons/DatumUhrzeit.js";
-import { loadRulesAndProcess } from "./sendMailsForRules.js";
-import { checkFluegel, checkFotograf } from "./sendMailsNightlyPhotoAndFluegel.js";
 import { checkPressetexte } from "./sendMailsPressetextFehlt.js";
 import { remindForProgrammheft } from "./sendMailsForProgrammheft.js";
-import { checkBar } from "./sendMailsNightlyBar.js";
 import { informAdmin } from "./sendMailToAdmin.js";
 import map from "lodash/map.js";
 const logger = loggers.get("application");
@@ -25,14 +22,14 @@ async function backupDatabase(targetDir) {
 async function nightlyMails() {
     const now = new DatumUhrzeit();
     const results = await Promise.all([
-        loadRulesAndProcess(now),
-        checkFluegel(now),
-        checkFotograf(now),
+        //loadRulesAndProcess(now),
+        //checkFluegel(now),
+        //checkFotograf(now),
         checkPressetexte(now),
         //checkKasse(now),
         remindForProgrammheft(now),
         //checkStaff(now),
-        checkBar(now),
+        //checkBar(now),
         //checkMaster(now),
     ]);
     const jobtypes = [
