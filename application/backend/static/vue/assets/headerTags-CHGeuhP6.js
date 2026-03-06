@@ -1,0 +1,1 @@
+import{j as o}from"./mdx-BUevqR7R.js";import{m}from"./JazzRouter--2mxJ6uj.js";import{T as t}from"./antd-BpZY5xKH.js";function f(e,s=!1){function a({label:r,color:l}){return o.jsx(t,{color:l?"success":"error",style:s?{border:0}:void 0,children:r},r)}return m(e,r=>o.jsx(a,{color:r.color,label:r.label},r.label))}export{f as h};
