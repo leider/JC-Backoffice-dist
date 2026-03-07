@@ -1,1 +1,0 @@
-import{j as t}from"./mdx-BUevqR7R.js";function p({children:r}){return t.jsx("div",{style:{marginLeft:"4px",marginRight:"4px"},children:r})}export{p as R};

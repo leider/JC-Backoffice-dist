@@ -1,0 +1,1 @@
+import{j as s}from"./mdx-CsWTVyEg.js";import{b as r}from"./vendor-BbW4DA-d.js";import{a as t,m as n}from"./JazzRouter-BrKf-yvd.js";function p(){const{optionen:o}=t();return r.useMemo(()=>n(o.typenPlus,e=>({label:s.jsx("span",{style:{color:e.color},children:e.name}),value:e.name})),[o.typenPlus])}export{p as u};

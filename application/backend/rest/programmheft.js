@@ -10,8 +10,10 @@ app.get("/programmheft/alle", [checkOrgateam], (req, res) => {
     resToJson(res, alleKalender);
 });
 app.get("/programmheft/:year/:month", [checkOrgateam], (req, res) => {
-    let yearMonthString = `${req.params.year}/${req.params.month}`;
-    if (parseInt(req.params.month) % 2 === 0) {
+    const year = req.params.year;
+    const month = req.params.month;
+    let yearMonthString = `${year}/${month}`;
+    if (parseInt(month) % 2 === 0) {
         const correctedDatum = DatumUhrzeit.forYYYYslashMM(yearMonthString).naechsterUngeraderMonat;
         yearMonthString = correctedDatum.fuerKalenderViews;
     }
