@@ -1,1 +1,0 @@
-import{j as d}from"./mdx-CsWTVyEg.js";import{J as f}from"./JazzFormAndHeaderExtended-BbFuzh3I.js";import{F as i}from"./antd-BpZY5xKH.js";function u({title:r,data:o,saveForm:m,additionalButtons:e,children:t,resetChanges:s,breadcrumb:a}){const[n]=i.useForm();return d.jsx(f,{additionalButtons:e,breadcrumb:a,data:o,form:n,resetChanges:s,saveForm:m,title:r,children:t})}export{u as J};
