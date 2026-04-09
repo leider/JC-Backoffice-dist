@@ -2,85 +2,47 @@ import pdfEndpoints from "../pdf/pdfEndpoints.js";
 import express from "express";
 import path, { dirname } from "path";
 import sharp from "sharp";
-import jwt from "jsonwebtoken";
 import { loggers } from "winston";
-import { v4 as uuidv4 } from "uuid";
 import { Builder } from "ikalendar";
-import DatumUhrzeit from "jc-shared/commons/DatumUhrzeit.js";
 import konzerteService from "../konzerte/konzerteService.js";
 import store from "../konzerte/konzertestore.js";
 import { resToJson } from "../commons/replies.js";
 import userstore from "../users/userstore.js";
 import { hashPassword } from "../commons/hashPassword.js";
-import conf from "../../simpleConfigure.js";
-import refreshstore from "./refreshstore.js";
 import usersService from "../users/usersService.js";
 import User, { SUPERUSERS } from "jc-shared/user/user.js";
 import fs from "fs";
 import { fileURLToPath } from "url";
 import filter from "lodash/filter.js";
 import map from "lodash/map.js";
+import { SESSION_COOKIE_NAME, sessionCookieClearOptions } from "../middleware/createSessionMiddleware.js";
+import conf from "../../simpleConfigure.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const appLogger = loggers.get("application");
 const app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.locals.pretty = true;
-const refreshTTL = conf.refreshTTL || 7 * 24 * 60 * 60 * 1000; // days*hours*mins*secs*millis
-const jwtTTL = conf.jwtTTL || 15 * 60; // 15 minutes
 app.get("/", (req, res) => {
     return res.redirect("/vue/veranstaltungen");
 });
-function createToken(req, res, name) {
-    const ttl = refreshTTL;
-    function addRefreshToken(res, refreshTokenId) {
-        res.cookie("refresh-token", refreshTokenId, {
-            maxAge: ttl,
-            httpOnly: true,
-            secure: false,
-            sameSite: "strict",
-        });
-    }
-    function persistRefreshToken(refreshTokenId, oldId, name, ttl) {
-        refreshstore.removeExpired();
-        const expiry = new Date(Date.now() + ttl);
-        return refreshstore.save({ id: oldId || refreshTokenId, userId: name, expiresAt: expiry });
-    }
-    const token = jwt.sign({ id: name }, conf.salt, { expiresIn: jwtTTL });
-    const refreshTokenId = uuidv4();
-    const oldId = req.cookies["refresh-token"] || "";
+function saveSession(req) {
+    return new Promise((resolve, reject) => {
+        req.session.save((err) => (err ? reject(err) : resolve()));
+    });
+}
+async function establishSession(req, res, userId) {
+    req.session.userId = userId;
     try {
-        persistRefreshToken(refreshTokenId, oldId, name, ttl);
-        addRefreshToken(res, oldId || refreshTokenId);
-        resToJson(res, { token });
+        await saveSession(req);
+        resToJson(res, { ok: true });
     }
     catch (e) {
-        appLogger.error("(createToken)", e);
-        return res.sendStatus(401);
+        appLogger.error("(establishSession)", e);
+        res.sendStatus(500);
     }
 }
-app.post("/refreshtoken", (req, res) => {
-    const oldId = req.cookies["refresh-token"];
-    if (!oldId) {
-        appLogger.warn("refreshToken without cookie called");
-        res.sendStatus(401);
-        return;
-    }
-    try {
-        const refreshToken = refreshstore.forId(oldId);
-        if (!refreshToken || DatumUhrzeit.forJSDate(refreshToken.expiresAt).istVor(new DatumUhrzeit())) {
-            res.sendStatus(401);
-            return;
-        }
-        createToken(req, res, refreshToken.userId);
-        return;
-    }
-    catch (e) {
-        appLogger.error("(/refreshtoken)", e);
-        res.sendStatus(401);
-    }
-});
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
     const name = req.body.name;
     const pass = req.body.pass;
     try {
@@ -94,7 +56,7 @@ app.post("/login", (req, res) => {
                 appLogger.info("No Users found, initializing Database.");
                 const firstUser = new User({ id: name, password: pass, gruppen: SUPERUSERS });
                 usersService.saveNewUserWithPassword(firstUser, firstUser);
-                createToken(req, res, name);
+                await establishSession(req, res, name);
                 return;
             }
             res.sendStatus(401);
@@ -102,7 +64,7 @@ app.post("/login", (req, res) => {
         }
         if (hashPassword(pass, user.salt) === user.hashedPassword) {
             appLogger.info("Successful Login for: " + name);
-            createToken(req, res, name);
+            await establishSession(req, res, name);
             return;
         }
         res.sendStatus(401);
@@ -117,13 +79,13 @@ app.post("/login", (req, res) => {
     }
 });
 app.post("/logout", (req, res) => {
-    refreshstore.removeExpired();
-    res.cookie("refresh-token", "", {
-        maxAge: 0,
-        httpOnly: true,
-        secure: false,
+    req.session.destroy((err) => {
+        if (err) {
+            appLogger.error("(/logout)", err);
+        }
+        res.clearCookie(SESSION_COOKIE_NAME, sessionCookieClearOptions());
+        res.send({});
     });
-    res.clearCookie("refresh-token").send({});
 });
 const uploadDir = conf.uploadDir;
 const placeholder = path.join(__dirname, "../../static/placeholder.png");
